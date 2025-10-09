@@ -1,4 +1,4 @@
-package com.pretty.joistsimpletextechoapp.ui.theme
+package com.pretty.joistsimpletextechoapp.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
