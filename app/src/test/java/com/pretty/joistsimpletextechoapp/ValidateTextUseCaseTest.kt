@@ -16,7 +16,7 @@ class ValidateTextUseCaseTest {
 
     private val failRepo = object : EchoRepository {
         override suspend fun validateAndEcho(input: String) =
-            EchoResult.Error("Server validation failed")
+            EchoResult.Error("The input string is invalid.")
     }
 
     @Test
@@ -28,7 +28,7 @@ class ValidateTextUseCaseTest {
     }
 
     @Test
-    fun `returns success when repository succeeds`() = runTest {
+    fun `returns success when 3rdparty website succeeds`() = runTest {
         val useCase = ValidateTextUseCase(successRepo)
         val result = useCase("Hello")
         assertTrue(result is EchoResult.Success)
@@ -36,10 +36,10 @@ class ValidateTextUseCaseTest {
     }
 
     @Test
-    fun `returns error when repository fails`() = runTest {
+    fun `returns error when 3rdparty website fails`() = runTest {
         val useCase = ValidateTextUseCase(failRepo)
         val result = useCase("Hello")
         assertTrue(result is EchoResult.Error)
-        assertEquals("Server validation failed", (result as EchoResult.Error).message)
+        assertEquals("The input string is invalid.", (result as EchoResult.Error).message)
     }
 }

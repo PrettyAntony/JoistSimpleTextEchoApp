@@ -68,6 +68,7 @@ fun EchoScreen(viewModel: EchoViewModel = hiltViewModel()) {
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                //input field
                 OutlinedTextField(
                     value = uiState.inputText,
                     onValueChange = viewModel::onTextChange,
@@ -75,10 +76,30 @@ fun EchoScreen(viewModel: EchoViewModel = hiltViewModel()) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(24.dp))
+
+                //when uiState has error message
+                uiState.errorMessage?.let { error ->
+                    Text(
+                        text = error,
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+
+                //when uiState has valid state
+                uiState.echoedText?.let { echoed ->
+                    Text(
+                        text = "Valid Input Text : $echoed",
+                        color = Color.Black,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+
+                Spacer(Modifier.height(24.dp))
 
                 Button(
-                    onClick = viewModel::onSubmit,
+                    onClick = viewModel::validateInputTextAndEcho,
                     enabled = !uiState.isLoading
                 ) {
                     if (uiState.isLoading) {
@@ -92,23 +113,7 @@ fun EchoScreen(viewModel: EchoViewModel = hiltViewModel()) {
                     }
                 }
 
-                Spacer(Modifier.height(24.dp))
 
-                uiState.errorMessage?.let { error ->
-                    Text(
-                        text = error,
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                uiState.echoedText?.let { echoed ->
-                    Text(
-                        text = "Echoed: $echoed",
-                        color = Color.Black,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
             }
         }
     }

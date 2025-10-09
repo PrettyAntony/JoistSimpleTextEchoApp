@@ -18,29 +18,24 @@ class EchoViewModel @Inject constructor(
     private val validateAndEchoTextUseCase: ValidateTextUseCase
 ) : ViewModel() {
 
+    //state variable
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    //observing onTextChange, updating state variable
     fun onTextChange(newText: String) {
         _uiState.update { it.copy(inputText = newText, errorMessage = null) }
     }
 
-    fun onSubmit() {
+
+    fun validateInputTextAndEcho() {
         val input = _uiState.value.inputText
+
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null, echoedText = null) }
 
-            if (input.isBlank()) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "The input string cannot be empty."
-                    )
-                }
-                return@launch
-            }
-
+            //Handle result success/error state
             when (val result = validateAndEchoTextUseCase(input)) {
                 is EchoResult.Success -> _uiState.update {
                     it.copy(

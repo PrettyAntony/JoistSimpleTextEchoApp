@@ -42,7 +42,7 @@ class EchoViewModelTest {
         useCaseFail = ValidateTextUseCase(
             object : EchoRepository {
                 override suspend fun validateAndEcho(input: String) =
-                    EchoResult.Error("Server validation failed")
+                    EchoResult.Error("The input string is invalid.")
             }
         )
     }
@@ -56,7 +56,7 @@ class EchoViewModelTest {
     fun `blank input shows error and clears echoedText`() = runTest {
         viewModel = EchoViewModel(useCaseSuccess)
         viewModel.onTextChange("")
-        viewModel.onSubmit()
+        viewModel.validateInputTextAndEcho()
 
         advanceUntilIdle()
 
@@ -69,7 +69,7 @@ class EchoViewModelTest {
     fun `successful input updates echoedText`() = runTest {
         viewModel = EchoViewModel(useCaseSuccess)
         viewModel.onTextChange("Hello")
-        viewModel.onSubmit()
+        viewModel.validateInputTextAndEcho()
 
         advanceUntilIdle()
 
@@ -83,12 +83,12 @@ class EchoViewModelTest {
     fun `failed input clears echoedText and shows error`() = runTest {
         viewModel = EchoViewModel(useCaseFail)
         viewModel.onTextChange("Hello")
-        viewModel.onSubmit()
+        viewModel.validateInputTextAndEcho()
 
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
         assertNull(state.echoedText)
-        assertEquals("Server validation failed", state.errorMessage)
+        assertEquals("The input string is invalid.", state.errorMessage)
     }
 }

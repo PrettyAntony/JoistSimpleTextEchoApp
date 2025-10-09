@@ -11,7 +11,7 @@ class EchoRepositoryImpl(
         return if (dataSource.sendTextToServer(input)) {
             EchoResult.Success(input)
         } else {
-            EchoResult.Error("Server validation failed")
+            EchoResult.Error("The input string is invalid.")
         }
     }
 }
