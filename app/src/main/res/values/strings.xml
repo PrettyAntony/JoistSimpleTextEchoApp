@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">SimpleTextEchoApp</string>
+    <string name="btn_submit">Submit</string>
+    <string name="valid_text">The input string is valid.</string>
+    <string name="invalid_text">The input string is invalid.</string>
+</resources>
